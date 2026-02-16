@@ -205,9 +205,66 @@ async function loadResults() {
             }
         }
 
+        // Update Odds
+        updateOdds(counts);
+
         setUpdated(`Last updated: ${new Date().toLocaleString()}`);
     } catch (e) {
         setMsg("Could not load results. Ensure the sheet is Published to the web.");
+    }
+}
+
+// Calculate and update odds display
+function updateOdds(counts) {
+    // Map poll keys to fighters for easier lookup if needed, or iterate directly
+    // Logic: Odds = Total Votes / Fighter Votes
+    // If Fighter Votes == 0, Odds = Total Votes (or a cap)
+
+    const pairings = {
+        poll1: ['Elias', 'Erik'],
+        poll2: ['Maxi', 'Chrisi'], // Chrisi-1 in UI but logic handles name
+        poll3: ['Gery', 'Chrisi'], // Chrisi-2
+        poll4: ['Patzi', 'Bier']
+    };
+
+    // Helper to find DOM ID
+    const getOddsId = (pollKey, fighter) => {
+        const lower = fighter.toLowerCase();
+        if (pollKey === 'poll2' && fighter === 'Chrisi') return 'odds-chrisi-1';
+        if (pollKey === 'poll3' && fighter === 'Chrisi') return 'odds-chrisi-2';
+        return `odds-${lower}`;
+    };
+
+    for (const [pollKey, fighters] of Object.entries(pairings)) {
+        const votesA = counts[pollKey][fighters[0]] || 0;
+        const votesB = counts[pollKey][fighters[1]] || 0;
+        const total = votesA + votesB;
+
+        const updateOne = (fighter, votes) => {
+            const el = document.getElementById(getOddsId(pollKey, fighter));
+            if (!el) return;
+
+            if (total === 0) {
+                el.textContent = "2.00"; // Equal start
+                return;
+            }
+
+            // Raw Decimal Odds = Total / Votes
+            // If votes is 0, practically infinite, but let's cap or show high number
+            // Standard approach: if 0 votes, give them high odds (e.g. 10.0 or 2 * total)
+
+            let odds;
+            if (votes === 0) {
+                odds = (total * 2).toFixed(2); // Fallback for 0 votes
+            } else {
+                odds = (total / votes).toFixed(2);
+            }
+
+            el.textContent = odds;
+        };
+
+        updateOne(fighters[0], votesA);
+        updateOne(fighters[1], votesB);
     }
 }
 
