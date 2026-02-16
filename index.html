@@ -1,117 +1,173 @@
-<!-- index.html -->
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>reithcup polls (POC)</title>
-    <script src="app.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RC - Reithcup</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto+Condensed:ital,wght@0,400;0,700;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Roboto Condensed"', 'sans-serif'],
+                        display: ['"Oswald"', 'sans-serif'],
+                    },
+                    colors: {
+                        'rc-red': '#D20A0A',
+                    },
+                    backgroundImage: {
+                        'hero-pattern': "url('https://images.unsplash.com/photo-1544698310-74ea9d188d17?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')",
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body {
-            font-family: system-ui, sans-serif;
-            max-width: 720px;
-            margin: 40px auto;
-            padding: 0 16px;
+        /* Custom slide animation for the button */
+        .btn-slide {
+            position: relative;
+            overflow: hidden;
+            transition: color 0.4s ease-in-out;
+            z-index: 1;
         }
 
-        .card {
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            padding: 16px;
-            margin: 12px 0;
+        .btn-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease-in-out;
+            z-index: -1;
         }
 
-        .row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-            align-items: center;
+        .btn-slide:hover::before {
+            transform: scaleX(1);
         }
 
-        button {
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            background: #fff;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #f6f6f6;
-        }
-
-        .count {
-            font-variant-numeric: tabular-nums;
-            padding: 2px 10px;
-            border: 1px solid #eee;
-            border-radius: 999px;
-        }
-
-        #msg {
-            margin-top: 16px;
-            color: #333;
-        }
-
-        #updated {
-            color: #666;
-            font-size: 14px;
-            margin-top: 8px;
+        .btn-slide:hover {
+            color: white;
+            border-color: white;
         }
     </style>
 </head>
 
-<body>
-    <h1>reithcup polls (POC)</h1>
-    <p>Click = vote recorded. Counts auto-refresh.</p>
+<body class="bg-black text-white font-sans antialiased overflow-x-hidden relative">
 
-    <div class="card">
-        <h2>Elias vs Erik</h2>
-        <div class="row">
-            <button onclick="vote('entry.1946702419','Elias')">Elias</button>
-            <span class="count" id="count-elias">0</span>
+    <!-- Floating Navbar -->
+    <nav
+        class="absolute top-0 left-0 right-0 z-50 flex items-center justify-center bg-white h-[60px] mx-4 md:mx-10 mt-6 shadow-lg relative">
 
-            <button onclick="vote('entry.1946702419','Erik')">Erik</button>
-            <span class="count" id="count-erik">0</span>
+        <!-- Mobile Burger Button -->
+        <button id="mobile-menu-btn" class="absolute left-6 md:hidden text-black focus:outline-none p-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                </path>
+            </svg>
+        </button>
+
+        <!-- Left Nav (Desktop) -->
+        <div class="absolute left-10 hidden md:flex h-full gap-8">
+            <a href="#"
+                class="flex items-center h-full text-sm font-bold text-black border-b-[3px] border-rc-red tracking-wide hover:text-rc-red transition-colors">
+                EVENTS
+            </a>
+        </div>
+
+        <!-- Logo -->
+        <div class="font-display text-[28px] font-bold text-black italic tracking-tighter cursor-default select-none">
+            RC
+        </div>
+
+        <!-- Right Nav (Desktop placeholder) -->
+        <div class="absolute right-10 hidden md:flex h-full items-center gap-6 text-black text-sm font-bold">
+            <!-- Icons or links -->
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu"
+            class="hidden absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-100 flex flex-col items-center py-4 md:hidden z-40 transition-all duration-300">
+            <a href="#"
+                class="block py-3 px-6 text-sm font-bold text-black tracking-wide hover:bg-gray-100 w-full text-center hover:text-rc-red transition-colors uppercase">
+                EVENTS
+            </a>
+            <!-- Potentially add "POLLS" link here too if needed -->
+            <a href="polls.html"
+                class="block py-3 px-6 text-sm font-bold text-black tracking-wide hover:bg-gray-100 w-full text-center hover:text-rc-red transition-colors uppercase">
+                POLLS
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative w-full h-screen bg-hero-pattern bg-cover bg-center flex items-center justify-center">
+
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/80 z-10"></div>
+
+        <!-- Content -->
+        <div class="relative z-20 text-center px-4 max-w-5xl mx-auto mt-20">
+            <!-- Added mt-20 to offset floating header visual -->
+
+            <!-- Event Label -->
+            <div
+                class="text-lg md:text-xl font-bold uppercase tracking-[2px] opacity-90 mb-4 drop-shadow-lg text-white">
+                RC REITH
+            </div>
+
+            <!-- Main Headline -->
+            <h1
+                class="font-display text-[64px] md:text-[110px] leading-[0.9] font-bold uppercase tracking-wide mb-6 drop-shadow-2xl">
+                Erik <span class="text-white">VS</span> Elias
+            </h1>
+
+            <!-- Sub Headline -->
+            <div
+                class="text-base md:text-lg opacity-90 font-medium uppercase tracking-widest mb-12 max-w-3xl mx-auto drop-shadow-md text-gray-200">
+                Top contenders collide when the octagon lands in Reith
+            </div>
+
+            <!-- CTA Button -->
+            <a href="polls.html"
+                class="btn-slide inline-flex items-center justify-center bg-white text-black font-bold text-lg px-12 py-4 uppercase tracking-[0.2em] border-2 border-transparent hover:border-white shadow-2xl">
+                View Fight Card
+            </a>
         </div>
     </div>
 
-    <div class="card">
-        <h2>Maxi vs Chrisi</h2>
-        <div class="row">
-            <button onclick="vote('entry.1298947205','Maxi')">Maxi</button>
-            <span class="count" id="count-maxi">0</span>
+    <!-- Mobile Menu Script -->
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
 
-            <button onclick="vote('entry.1298947205','Chrisi')">Chrisi</button>
-            <span class="count" id="count-chrisi-1">0</span>
-        </div>
-    </div>
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
 
-    <div class="card">
-        <h2>Gery vs Chrisi</h2>
-        <div class="row">
-            <button onclick="vote('entry.1819511091','Gery')">Gery</button>
-            <span class="count" id="count-gery">0</span>
+        // Close menu when clicking outside (optional UX improvement)
+        document.addEventListener('click', (e) => {
+            if (!menu.contains(e.target) && !btn.contains(e.target) && !menu.classList.contains('hidden')) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
 
-            <button onclick="vote('entry.1819511091','Chrisi')">Chrisi</button>
-            <span class="count" id="count-chrisi-2">0</span>
-        </div>
-    </div>
-
-    <div class="card">
-        <h2>Patzi vs Bier</h2>
-        <div class="row">
-            <button onclick="vote('entry.1721433686','Patzi')">Patzi</button>
-            <span class="count" id="count-patzi">0</span>
-
-            <button onclick="vote('entry.1721433686','Bier')">Bier</button>
-            <span class="count" id="count-bier">0</span>
-        </div>
-    </div>
-
-    <div id="msg"></div>
-    <div id="updated"></div>
 </body>
 
 </html>

@@ -4,11 +4,11 @@
 const FORM_POST_URL =
     "https://docs.google.com/forms/d/e/1FAIpQLSdBDQGNgqUCuihSwIJ-7g0dH3kkBMERTUuMEBTBBWcjpwr6xg/formResponse";
 
-// Your spreadsheet + gid (from your link)
+// Spreadsheet + gid for live results (JSONP via Google Visualization API)
 const SPREADSHEET_ID = "1hx195W3genRE7TVQCfKmzYhkzCULOF7I5479gFQf0iM";
 const GID = "249277049";
 
-// DOM targets for counts
+// DOM targets for counts (note Chrisi appears twice, so it has two different span IDs)
 const COUNT_IDS = {
     poll1: { Elias: "count-elias", Erik: "count-erik" },
     poll2: { Maxi: "count-maxi", Chrisi: "count-chrisi-1" },
@@ -31,10 +31,74 @@ function setCount(id, n) {
     if (el) el.textContent = String(n);
 }
 
-// --- Vote submit ---
+// -------------------------------
+// One choice per match (in-memory)
+// -------------------------------
+
+// In-memory: one choice per match (entryId)
+const selectedByEntry = Object.create(null);
+
+// Map entryId -> button ids for toggling selected UI
+const BUTTON_IDS = {
+    "entry.1946702419": { Elias: "btn-1946702419-elias", Erik: "btn-1946702419-erik" },
+    "entry.1298947205": { Maxi: "btn-1298947205-maxi", Chrisi: "btn-1298947205-chrisi" },
+    "entry.1819511091": { Gery: "btn-1819511091-gery", Chrisi: "btn-1819511091-chrisi" },
+    "entry.1721433686": { Patzi: "btn-1721433686-patzi", Bier: "btn-1721433686-bier" },
+};
+
+// Resolve which counter span corresponds to a specific match+choice
+function countSpanIdFor(entryId, choice) {
+    if (entryId === "entry.1946702419") return (COUNT_IDS.poll1[choice] || null);
+    if (entryId === "entry.1298947205") return (COUNT_IDS.poll2[choice] || null);
+    if (entryId === "entry.1819511091") return (COUNT_IDS.poll3[choice] || null);
+    if (entryId === "entry.1721433686") return (COUNT_IDS.poll4[choice] || null);
+    return null;
+}
+
+function bumpCount(spanId, delta) {
+    const el = document.getElementById(spanId);
+    if (!el) return;
+    const current = parseInt(el.textContent || "0", 10);
+    el.textContent = String(Math.max(0, current + delta));
+}
+
+function setSelectedUI(entryId, choice) {
+    const map = BUTTON_IDS[entryId];
+    if (!map) return;
+
+    for (const opt of Object.keys(map)) {
+        const btn = document.getElementById(map[opt]);
+        if (!btn) continue;
+        btn.classList.toggle("selected", opt === choice);
+    }
+}
+
+// --- Vote submit (single-choice per match; switching allowed) ---
 window.vote = async function (entryId, choice) {
+    const prev = selectedByEntry[entryId];
+
+    // clicking the already-selected option does nothing
+    if (prev === choice) {
+        setMsg(`Already selected: ${choice}`);
+        return;
+    }
+
     setMsg(`Submitting vote: ${choice} ...`);
 
+    // ✅ Optimistic update: if switching, undo previous optimistic choice first
+    if (prev) {
+        const prevCountId = countSpanIdFor(entryId, prev);
+        if (prevCountId) bumpCount(prevCountId, -1);
+    }
+
+    const newCountId = countSpanIdFor(entryId, choice);
+    if (newCountId) bumpCount(newCountId, +1);
+
+    // Store selection (in-memory only; resets on reload)
+    selectedByEntry[entryId] = choice;
+    setSelectedUI(entryId, choice);
+
+    // Submit vote to Google Forms (creates a new response row each time)
     const data = new URLSearchParams();
     data.append(entryId, choice);
 
@@ -46,14 +110,18 @@ window.vote = async function (entryId, choice) {
             body: data.toString(),
         });
 
-        setMsg(`✅ Vote recorded: ${choice}`);
-        setTimeout(loadResults, 1200);
+        setMsg(`✅ Selected: ${choice}`);
+        setTimeout(loadResults, 1500); // sync real counts after sheet updates
     } catch (e) {
-        setMsg("❌ Submit failed. Try again.");
+        setMsg("❌ Submit failed. Re-syncing…");
+        loadResults(); // overwrite optimistic numbers with real ones
     }
 };
 
-// --- JSONP results loader (bypasses CORS; works on GitHub Pages) ---
+// -------------------------------
+// Results loading (JSONP, no CORS)
+// -------------------------------
+
 function gvizToRows(table) {
     const cols = (table.cols || []).map(c => c.label || "");
     const rows = (table.rows || []).map(r => (r.c || []).map(cell => (cell ? cell.v : "")));
@@ -81,7 +149,7 @@ function loadResultsJsonp() {
             `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq` +
             `?gid=${encodeURIComponent(GID)}` +
             `&tqx=out:json;responseHandler:${cbName}` +
-            `&_=${Date.now()}`; // cache-bust
+            `&_=${Date.now()}`;
 
         script.src = url;
         script.onerror = () => {
@@ -94,7 +162,7 @@ function loadResultsJsonp() {
     });
 }
 
-// --- Counting logic (matches your form question titles) ---
+// Counting logic: matches Google Sheets headers (your form question titles)
 function computeCounts(rows, header) {
     const col = {
         poll1: header.indexOf("Elias vs Erik"),
