@@ -1,10 +1,11 @@
+<!-- index.html -->
 <!doctype html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>reithcup polls (poc)</title>
+    <title>reithcup polls (POC)</title>
     <script src="app.js" defer></script>
     <style>
         body {
@@ -26,6 +27,7 @@
             gap: 10px;
             flex-wrap: wrap;
             margin-top: 10px;
+            align-items: center;
         }
 
         button {
@@ -40,22 +42,38 @@
             background: #f6f6f6;
         }
 
+        .count {
+            font-variant-numeric: tabular-nums;
+            padding: 2px 10px;
+            border: 1px solid #eee;
+            border-radius: 999px;
+        }
+
         #msg {
             margin-top: 16px;
             color: #333;
+        }
+
+        #updated {
+            color: #666;
+            font-size: 14px;
+            margin-top: 8px;
         }
     </style>
 </head>
 
 <body>
     <h1>reithcup polls (POC)</h1>
-    <p>Click = vote recorded in Google Forms/Sheets.</p>
+    <p>Click = vote recorded. Counts auto-refresh.</p>
 
     <div class="card">
         <h2>Elias vs Erik</h2>
         <div class="row">
             <button onclick="vote('entry.1946702419','Elias')">Elias</button>
+            <span class="count" id="count-elias">0</span>
+
             <button onclick="vote('entry.1946702419','Erik')">Erik</button>
+            <span class="count" id="count-erik">0</span>
         </div>
     </div>
 
@@ -63,7 +81,10 @@
         <h2>Maxi vs Chrisi</h2>
         <div class="row">
             <button onclick="vote('entry.1298947205','Maxi')">Maxi</button>
+            <span class="count" id="count-maxi">0</span>
+
             <button onclick="vote('entry.1298947205','Chrisi')">Chrisi</button>
+            <span class="count" id="count-chrisi-1">0</span>
         </div>
     </div>
 
@@ -71,7 +92,10 @@
         <h2>Gery vs Chrisi</h2>
         <div class="row">
             <button onclick="vote('entry.1819511091','Gery')">Gery</button>
+            <span class="count" id="count-gery">0</span>
+
             <button onclick="vote('entry.1819511091','Chrisi')">Chrisi</button>
+            <span class="count" id="count-chrisi-2">0</span>
         </div>
     </div>
 
@@ -79,11 +103,15 @@
         <h2>Patzi vs Bier</h2>
         <div class="row">
             <button onclick="vote('entry.1721433686','Patzi')">Patzi</button>
+            <span class="count" id="count-patzi">0</span>
+
             <button onclick="vote('entry.1721433686','Bier')">Bier</button>
+            <span class="count" id="count-bier">0</span>
         </div>
     </div>
 
     <div id="msg"></div>
+    <div id="updated"></div>
 </body>
 
 </html>
