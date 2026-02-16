@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>reithcup polls (poc)</title>
+    <script src="app.js" defer></script>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 720px;
+            margin: 40px auto;
+            padding: 0 16px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 12px 0;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #f6f6f6;
+        }
+
+        #msg {
+            margin-top: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>reithcup polls (POC)</h1>
+    <p>Click = vote recorded in Google Forms/Sheets.</p>
+
+    <div class="card">
+        <h2>Elias vs Erik</h2>
+        <div class="row">
+            <button onclick="vote('entry.1946702419','Elias')">Elias</button>
+            <button onclick="vote('entry.1946702419','Erik')">Erik</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Maxi vs Chrisi</h2>
+        <div class="row">
+            <button onclick="vote('entry.1298947205','Maxi')">Maxi</button>
+            <button onclick="vote('entry.1298947205','Chrisi')">Chrisi</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Gery vs Chrisi</h2>
+        <div class="row">
+            <button onclick="vote('entry.1819511091','Gery')">Gery</button>
+            <button onclick="vote('entry.1819511091','Chrisi')">Chrisi</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Patzi vs Bier</h2>
+        <div class="row">
+            <button onclick="vote('entry.1721433686','Patzi')">Patzi</button>
+            <button onclick="vote('entry.1721433686','Bier')">Bier</button>
+        </div>
+    </div>
+
+    <div id="msg"></div>
+</body>
+
+</html>
