@@ -4,9 +4,9 @@
 const FORM_POST_URL =
     "https://docs.google.com/forms/d/e/1FAIpQLSdBDQGNgqUCuihSwIJ-7g0dH3kkBMERTUuMEBTBBWcjpwr6xg/formResponse";
 
-// ✅ Published sheet CSV (your link)
-const SHEET_CSV_URL =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vTkh_uC_YN5NgXVzSUi74upOGQKssXiqH3taRTe9FRzwixAwNJUhUM9-bPImVXCLS3M16rEC7A27mgr/pub?output=csv";
+// Your spreadsheet + gid (from your link)
+const SPREADSHEET_ID = "1hx195W3genRE7TVQCfKmzYhkzCULOF7I5479gFQf0iM";
+const GID = "249277049";
 
 // DOM targets for counts
 const COUNT_IDS = {
@@ -53,32 +53,48 @@ window.vote = async function (entryId, choice) {
     }
 };
 
-// --- CSV parsing + counting ---
-function parseCsvLine(line) {
-    const out = [];
-    let cur = "";
-    let inQuotes = false;
-
-    for (let i = 0; i < line.length; i++) {
-        const ch = line[i];
-        if (ch === '"') {
-            if (inQuotes && line[i + 1] === '"') {
-                cur += '"';
-                i++;
-            } else {
-                inQuotes = !inQuotes;
-            }
-        } else if (ch === "," && !inQuotes) {
-            out.push(cur);
-            cur = "";
-        } else {
-            cur += ch;
-        }
-    }
-    out.push(cur);
-    return out;
+// --- JSONP results loader (bypasses CORS; works on GitHub Pages) ---
+function gvizToRows(table) {
+    const cols = (table.cols || []).map(c => c.label || "");
+    const rows = (table.rows || []).map(r => (r.c || []).map(cell => (cell ? cell.v : "")));
+    return { cols, rows };
 }
 
+function loadResultsJsonp() {
+    return new Promise((resolve, reject) => {
+        const cbName = "gvizCb_" + Math.random().toString(36).slice(2);
+
+        window[cbName] = (data) => {
+            try {
+                const { cols, rows } = gvizToRows(data.table);
+                resolve({ cols, rows });
+            } catch (e) {
+                reject(e);
+            } finally {
+                script.remove();
+                delete window[cbName];
+            }
+        };
+
+        const script = document.createElement("script");
+        const url =
+            `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq` +
+            `?gid=${encodeURIComponent(GID)}` +
+            `&tqx=out:json;responseHandler:${cbName}` +
+            `&_=${Date.now()}`; // cache-bust
+
+        script.src = url;
+        script.onerror = () => {
+            script.remove();
+            delete window[cbName];
+            reject(new Error("JSONP load failed"));
+        };
+
+        document.head.appendChild(script);
+    });
+}
+
+// --- Counting logic (matches your form question titles) ---
 function computeCounts(rows, header) {
     const col = {
         poll1: header.indexOf("Elias vs Erik"),
@@ -106,20 +122,12 @@ function computeCounts(rows, header) {
 
 async function loadResults() {
     try {
-        // cache bust
-        const url = SHEET_CSV_URL + "&cb=" + Date.now();
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`CSV fetch failed: ${res.status}`);
+        const { cols: header, rows } = await loadResultsJsonp();
 
-        const text = await res.text();
-        const lines = text.trim().split(/\r?\n/);
-        if (lines.length < 2) {
-            setMsg("No responses yet.");
+        if (!header.length) {
+            setMsg("No header found. Make sure the sheet is Published to the web.");
             return;
         }
-
-        const header = parseCsvLine(lines[0]);
-        const rows = lines.slice(1).map(parseCsvLine);
 
         const counts = computeCounts(rows, header);
 
@@ -131,7 +139,7 @@ async function loadResults() {
 
         setUpdated(`Last updated: ${new Date().toLocaleString()}`);
     } catch (e) {
-        setMsg("Could not load results (check the published CSV link).");
+        setMsg("Could not load results. Ensure the sheet is Published to the web.");
     }
 }
 
