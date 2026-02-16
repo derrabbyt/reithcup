@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event | RC REITH</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Roboto Condensed"', 'sans-serif'],
+                        display: ['"Oswald"', 'sans-serif'],
+                    },
+                    colors: {
+                        'rc-red': '#D20A0A',
+                        'rc-blue': '#0A4AD2',
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        .view-transition {
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .hidden-visually {
+            opacity: 0;
+            pointer-events: none;
+            /* Don't use display:none here to allow fade out, handle display in JS */
+        }
+    </style>
+</head>
+
+<body class="bg-[#F6F6F6] text-black font-sans antialiased overflow-x-hidden text-sm">
+
+    <!-- Navbar -->
+    <nav class="flex items-center justify-center bg-white h-[50px] border-b border-gray-200 px-10 relative z-50">
+        <a href="index.html"
+            class="font-display text-2xl font-bold text-black italic tracking-tighter cursor-pointer select-none no-underline">
+            RC
+        </a>
+    </nav>
+
+    <!-- Hero / Header -->
+    <div class="bg-black text-white text-center py-8">
+        <h1 class="font-display text-3xl md:text-5xl font-bold uppercase tracking-wide">RC REITH</h1>
+        <p class="text-lg md:text-xl mt-2 font-light uppercase tracking-widest text-[#D20A0A]">Fri, Feb 20 / 8:00 PM CET
+        </p>
+    </div>
+
+    <!-- Sticky Sub-Nav -->
+    <div class="sticky top-0 bg-white border-b border-gray-200 z-40 shadow-sm">
+        <div class="flex justify-center gap-8 py-3 uppercase font-bold tracking-widest text-xs md:text-sm">
+            <a href="#main-card"
+                class="hover:text-[#D20A0A] transition-colors cursor-pointer border-b-2 border-transparent hover:border-[#D20A0A] pb-1">Main
+                Card</a>
+            <a href="#prelims"
+                class="hover:text-[#D20A0A] transition-colors cursor-pointer border-b-2 border-transparent hover:border-[#D20A0A] pb-1">Prelims</a>
+        </div>
+    </div>
+
+    <!-- Layout Container -->
+    <div class="max-w-5xl mx-auto px-4 py-8"> <!-- Reduced width -->
+
+        <!-- MAIN CARD -->
+        <div id="main-card" class="mb-12">
+            <div class="flex justify-between items-end mb-6 border-b border-black pb-2">
+                <h2 class="font-display text-3xl md:text-4xl font-bold uppercase">Main Card</h2>
+                <span class="font-bold text-xs tracking-wide mb-1">RC REITH</span>
+            </div>
+
+            <div class="space-y-4">
+
+                <!-- Fight Item: Erik vs Elias -->
+                <div class="card-container bg-white shadow-sm hover:shadow-xl transition-shadow duration-300 w-full cursor-pointer group rounded-lg relative overflow-hidden"
+                    onclick="handleCardClick(this)">
+
+                    <!-- CLOSED VIEW -->
+                    <div class="closed-view p-4 view-transition">
+                        <div class="flex flex-col md:flex-row items-center justify-between">
+                            <!-- Fighter 1 -->
+                            <div class="flex-1 flex justify-between items-center md:pr-4 w-full md:w-auto">
+                                <img src="https://placehold.co/150x150?text=Erik"
+                                    class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-md">
+                                <div class="text-right flex flex-col justify-center px-4">
+                                    <span class="text-[10px] font-bold text-gray-500 mb-0.5">#3</span>
+                                    <h3 class="font-display text-2xl font-bold uppercase leading-none">ERIK</h3>
+                                    <span class="text-[#D20A0A] font-bold text-[10px] uppercase mt-0.5">Odds -150</span>
+                                </div>
+                            </div>
+                            <!-- VS -->
+                            <div class="w-full md:w-auto flex flex-col items-center justify-center my-2 md:my-0">
+                                <span
+                                    class="text-[10px] font-bold tracking-widest uppercase text-gray-500 mb-1">Middleweight</span>
+                                <span class="font-display text-2xl font-bold italic text-black">VS</span>
+                            </div>
+                            <!-- Fighter 2 -->
+                            <div class="flex-1 flex justify-between items-center md:pl-4 w-full md:w-auto">
+                                <div class="text-left flex flex-col justify-center px-4">
+                                    <span class="text-[10px] font-bold text-gray-500 mb-0.5">#4</span>
+                                    <h3 class="font-display text-2xl font-bold uppercase leading-none">ELIAS</h3>
+                                    <span class="text-rc-blue font-bold text-[10px] uppercase mt-0.5">Odds +120</span>
+                                </div>
+                                <img src="https://placehold.co/150x150?text=Elias"
+                                    class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-md">
+                            </div>
+                        </div>
+                        <!-- Footer Closed -->
+                        <div
+                            class="mt-3 flex justify-between items-center border-t border-gray-100 pt-2 text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                            <div>🇺🇸 United States</div>
+                            <div>United States 🇺🇸</div>
+                        </div>
+                    </div>
+
+                    <!-- OPEN VIEW -->
+                    <div class="open-view hidden opacity-0 view-transition bg-white">
+                        <!-- Top Header Row -->
+                        <div class="flex justify-between items-end px-6 pt-6 pb-2">
+                            <h2
+                                class="font-display text-3xl md:text-4xl font-bold uppercase leading-none w-1/3 text-left">
+                                ERIK</h2>
+                            <span
+                                class="w-1/3 text-center text-gray-400 font-bold uppercase text-[10px] tracking-widest mb-1">Middleweight
+                                Bout</span>
+                            <h2
+                                class="font-display text-3xl md:text-4xl font-bold uppercase leading-none w-1/3 text-right">
+                                ELIAS</h2>
+                        </div>
+
+                        <!-- Colored Dividers -->
+                        <div class="flex h-1 w-full">
+                            <div class="w-1/2 bg-[#D20A0A]"></div>
+                            <div class="w-1/2 bg-[#0A4AD2]"></div>
+                        </div>
+
+                        <!-- Main Content Grid -->
+                        <div class="flex flex-row items-stretch justify-between relative min-h-[400px] overflow-hidden">
+
+                            <!-- Full Body Image Left -->
+                            <div class="w-1/4 md:w-1/3 relative">
+                                <img src="https://placehold.co/400x800/white/e2e2e2?text=Full+Body+Erik"
+                                    class="absolute bottom-0 left-0 w-full object-contain object-bottom max-h-[400px] z-10 transition-transform duration-1000 transform translate-y-10"
+                                    id="img-left">
+                            </div>
+
+                            <!-- Center Stats Column -->
+                            <div class="w-1/2 md:w-1/3 py-6 z-20 bg-white/90 backdrop-blur-sm self-center">
+                                <div class="text-center mb-6">
+                                    <h3 class="font-display font-bold text-lg uppercase tracking-wider text-black">
+                                        Matchup Stats</h3>
+                                </div>
+
+                                <div class="space-y-4 px-2">
+                                    <!-- Stat Row -->
+                                    <div class="flex items-center justify-between text-sm">
+                                        <span class="font-bold text-[#D20A0A] w-1/3 text-right">29-7-0</span>
+                                        <span
+                                            class="font-bold text-gray-400 text-[10px] w-1/3 text-center uppercase tracking-widest">Record</span>
+                                        <span class="font-bold text-rc-blue w-1/3 text-left">15-2-0</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm">
+                                        <span class="font-bold text-[#D20A0A] w-1/3 text-right">Loss</span>
+                                        <span
+                                            class="font-bold text-gray-400 text-[10px] w-1/3 text-center uppercase tracking-widest">Last
+                                            Fight</span>
+                                        <span class="font-bold text-rc-blue w-1/3 text-left">Win</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm">
+                                        <span class="font-bold text-[#D20A0A] w-1/3 text-right">USA</span>
+                                        <span
+                                            class="font-bold text-gray-400 text-[10px] w-1/3 text-center uppercase tracking-widest">Country</span>
+                                        <span class="font-bold text-rc-blue w-1/3 text-left">USA</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm">
+                                        <span class="font-bold text-[#D20A0A] w-1/3 text-right">6' 1"</span>
+                                        <span
+                                            class="font-bold text-gray-400 text-[10px] w-1/3 text-center uppercase tracking-widest">Height</span>
+                                        <span class="font-bold text-rc-blue w-1/3 text-left">6' 0"</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm">
+                                        <span class="font-bold text-[#D20A0A] w-1/3 text-right">185 LB</span>
+                                        <span
+                                            class="font-bold text-gray-400 text-[10px] w-1/3 text-center uppercase tracking-widest">Weight</span>
+                                        <span class="font-bold text-rc-blue w-1/3 text-left">186 LB</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm">
+                                        <span class="font-bold text-[#D20A0A] w-1/3 text-right">76 in</span>
+                                        <span
+                                            class="font-bold text-gray-400 text-[10px] w-1/3 text-center uppercase tracking-widest">Reach</span>
+                                        <span class="font-bold text-rc-blue w-1/3 text-left">75 in</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Full Body Image Right -->
+                            <div class="w-1/4 md:w-1/3 relative">
+                                <img src="https://placehold.co/400x800/white/e2e2e2?text=Full+Body+Elias"
+                                    class="absolute bottom-0 right-0 w-full object-contain object-bottom max-h-[400px] z-10 transition-transform duration-1000 transform translate-y-10"
+                                    id="img-right">
+                            </div>
+                        </div>
+
+                        <div class="absolute top-4 right-4 text-gray-300 hover:text-gray-500 cursor-pointer">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fight Item 2 (Maxi vs Chrisi) -->
+                <div class="card-container bg-white shadow-sm hover:shadow-xl transition-shadow duration-300 w-full cursor-pointer group rounded-lg relative overflow-hidden"
+                    onclick="handleCardClick(this)">
+                    <div class="closed-view p-4 view-transition">
+                        <div class="flex flex-col md:flex-row items-center justify-between">
+                            <div class="flex-1 flex justify-between items-center md:pr-4 w-full md:w-auto">
+                                <img src="https://placehold.co/150x150?text=Maxi"
+                                    class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-md">
+                                <div class="text-right flex flex-col justify-center px-4">
+                                    <span class="text-[10px] font-bold text-gray-500 mb-0.5">#12</span>
+                                    <h3 class="font-display text-2xl font-bold uppercase leading-none">MAXI</h3>
+                                    <span class="text-[#D20A0A] font-bold text-[10px] uppercase mt-0.5">Odds -110</span>
+                                </div>
+                            </div>
+                            <div class="w-full md:w-auto flex flex-col items-center justify-center my-2 md:my-0">
+                                <span
+                                    class="text-[10px] font-bold tracking-widest uppercase text-gray-500 mb-1">Welterweight</span>
+                                <span class="font-display text-2xl font-bold italic text-black">VS</span>
+                            </div>
+                            <div class="flex-1 flex justify-between items-center md:pl-4 w-full md:w-auto">
+                                <div class="text-left flex flex-col justify-center px-4">
+                                    <span class="text-[10px] font-bold text-gray-500 mb-0.5"></span>
+                                    <h3 class="font-display text-2xl font-bold uppercase leading-none">CHRISI</h3>
+                                    <span class="text-rc-blue font-bold text-[10px] uppercase mt-0.5">Odds -110</span>
+                                </div>
+                                <img src="https://placehold.co/150x150?text=Chrisi"
+                                    class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-md">
+                            </div>
+                        </div>
+                        <div
+                            class="mt-3 flex justify-between items-center border-t border-gray-100 pt-2 text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                            <div>🇺🇸 United States</div>
+                            <div>Serbia 🇷🇸</div>
+                        </div>
+                    </div>
+                    <!-- Open View Skeleton -->
+                    <div class="open-view hidden opacity-0 view-transition bg-white">
+                        <div class="flex justify-between items-end px-6 pt-6 pb-2">
+                            <h2
+                                class="font-display text-3xl md:text-4xl font-bold uppercase leading-none w-1/3 text-left">
+                                MAXI</h2>
+                            <span
+                                class="w-1/3 text-center text-gray-400 font-bold uppercase text-[10px] tracking-widest mb-1">Welterweight</span>
+                            <h2
+                                class="font-display text-3xl md:text-4xl font-bold uppercase leading-none w-1/3 text-right">
+                                CHRISI</h2>
+                        </div>
+                        <div class="flex h-1 w-full">
+                            <div class="w-1/2 bg-[#D20A0A]"></div>
+                            <div class="w-1/2 bg-[#0A4AD2]"></div>
+                        </div>
+                        <div class="flex flex-row items-stretch justify-between relative min-h-[400px] overflow-hidden">
+                            <div class="w-1/4 md:w-1/3 relative"><img
+                                    src="https://placehold.co/400x800/white/e2e2e2?text=Full+Body+Maxi"
+                                    class="absolute bottom-0 left-0 w-full object-contain object-bottom max-h-[400px]">
+                            </div>
+                            <div class="w-1/2 md:w-1/3 py-6 z-20 bg-white/90 backdrop-blur-sm self-center text-center">
+                                <span class="font-bold">Stats Placeholder</span></div>
+                            <div class="w-1/4 md:w-1/3 relative"><img
+                                    src="https://placehold.co/400x800/white/e2e2e2?text=Full+Body+Chrisi"
+                                    class="absolute bottom-0 right-0 w-full object-contain object-bottom max-h-[400px]">
+                            </div>
+                        </div>
+                        <div class="absolute top-4 right-4 text-gray-300 hover:text-gray-500 cursor-pointer"><svg
+                                class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- PRELIMS -->
+        <div id="prelims" class="mb-12">
+            <div class="flex justify-between items-end mb-6 border-b border-black pb-2">
+                <h2 class="font-display text-3xl md:text-4xl font-bold uppercase">Prelims</h2>
+                <span class="font-bold text-xs tracking-wide mb-1">RC REITH</span>
+            </div>
+            <div class="space-y-4">
+                <div
+                    class="bg-white p-4 shadow-sm rounded-lg flex justify-between items-center hover:shadow-md transition-shadow cursor-pointer">
+                    <span class="font-bold font-display uppercase text-lg">Gery vs Chrisi</span>
+                    <span class="text-xs text-gray-500 font-bold">MIDDLEWEIGHT</span>
+                </div>
+                <div
+                    class="bg-white p-4 shadow-sm rounded-lg flex justify-between items-center hover:shadow-md transition-shadow cursor-pointer">
+                    <span class="font-bold font-display uppercase text-lg">Patzi vs Bier</span>
+                    <span class="text-xs text-gray-500 font-bold">FLYWEIGHT</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function handleCardClick(card) {
+            // If card is already animating or active, handle closing logic?
+            // For simplicity: If clicked and closed, open it. If open, close it (optional).
+            // This implementation assumes toggle on click.
+
+            const closedView = card.querySelector('.closed-view');
+            const openView = card.querySelector('.open-view');
+            const isActive = card.classList.contains('active-card');
+
+            if (isActive) {
+                // CLOSE
+                card.classList.remove('active-card');
+
+                // 1. Fade OUT Open View (slowly)
+                openView.style.opacity = '0';
+
+                // 2. Wait for fade, then hide Open, show Closed (hidden), then fade IN Closed
+                setTimeout(() => {
+                    openView.classList.add('hidden');
+                    closedView.classList.remove('hidden');
+                    // Force reflow
+                    void closedView.offsetWidth;
+                    closedView.style.opacity = '1';
+                }, 500); // 500ms match css transition
+
+            } else {
+                // OPEN
+                // Close others first?
+                document.querySelectorAll('.active-card').forEach(c => {
+                    // Quick close others or run same logic? Let's just quick close them to reset
+                    c.classList.remove('active-card');
+                    c.querySelector('.open-view').classList.add('hidden');
+                    c.querySelector('.open-view').style.opacity = '0';
+                    c.querySelector('.closed-view').classList.remove('hidden');
+                    c.querySelector('.closed-view').style.opacity = '1';
+                });
+
+                card.classList.add('active-card');
+
+                // 1. Fade OUT Closed View
+                closedView.style.opacity = '0';
+
+                // 2. Wait, then swap
+                setTimeout(() => {
+                    closedView.classList.add('hidden');
+                    openView.classList.remove('hidden');
+
+                    // Force reflow
+                    void openView.offsetWidth;
+
+                    // 3. Fade IN Open View
+                    openView.style.opacity = '1';
+
+                    // Optional: Animate images up
+                    const imgLeft = openView.querySelector('#img-left');
+                    const imgRight = openView.querySelector('#img-right');
+                    if (imgLeft) imgLeft.classList.remove('translate-y-10');
+                    if (imgRight) imgRight.classList.remove('translate-y-10');
+
+                }, 500); // Wait 500ms for closed view to fade out
+            }
+        }
+    </script>
+</body>
+
+</html>

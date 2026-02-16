@@ -127,24 +127,50 @@
 
             <!-- Event Label -->
             <div
-                class="text-lg md:text-xl font-bold uppercase tracking-[2px] opacity-90 mb-4 drop-shadow-lg text-white">
+                class="text-lg md:text-xl font-bold uppercase tracking-[2px] opacity-90 mb-1 drop-shadow-lg text-white">
                 RC REITH
             </div>
 
             <!-- Main Headline -->
             <h1
-                class="font-display text-[64px] md:text-[110px] leading-[0.9] font-bold uppercase tracking-wide mb-6 drop-shadow-2xl">
+                class="font-display text-[64px] md:text-[110px] leading-[0.9] font-bold uppercase tracking-wide mb-2 drop-shadow-2xl">
                 Erik <span class="text-white">VS</span> Elias
             </h1>
 
-            <!-- Sub Headline -->
+            <!-- Date & Location -->
             <div
-                class="text-base md:text-lg opacity-90 font-medium uppercase tracking-widest mb-12 max-w-3xl mx-auto drop-shadow-md text-gray-200">
-                Top contenders collide when the octagon lands in Reith
+                class="text-xl md:text-2xl font-bold uppercase tracking-wider mb-1 drop-shadow-md text-white font-sans">
+                Fri, Feb 20 / 8:00 PM CET
+            </div>
+            <div class="text-base md:text-lg text-gray-300 uppercase tracking-wide mb-6 drop-shadow-md">
+                Reith, Austria
             </div>
 
+            <!-- Countdown -->
+            <div id="countdown"
+                class="flex justify-center gap-4 md:gap-8 mb-10 text-white font-display uppercase tracking-wider bg-black/40 p-4 rounded-lg backdrop-blur-sm inline-flex">
+                <div class="flex flex-col items-center min-w-[60px]">
+                    <span class="text-3xl md:text-5xl font-bold" id="days">00</span>
+                    <span class="text-xs md:text-sm text-gray-400">Days</span>
+                </div>
+                <div class="flex flex-col items-center min-w-[60px]">
+                    <span class="text-3xl md:text-5xl font-bold" id="hours">00</span>
+                    <span class="text-xs md:text-sm text-gray-400">Hours</span>
+                </div>
+                <div class="flex flex-col items-center min-w-[60px]">
+                    <span class="text-3xl md:text-5xl font-bold" id="minutes">00</span>
+                    <span class="text-xs md:text-sm text-gray-400">Mins</span>
+                </div>
+                <div class="flex flex-col items-center min-w-[60px]">
+                    <span class="text-3xl md:text-5xl font-bold" id="seconds">00</span>
+                    <span class="text-xs md:text-sm text-gray-400">Secs</span>
+                </div>
+            </div>
+
+            <div class="mb-4"></div>
+
             <!-- CTA Button -->
-            <a href="polls.html"
+            <a href="event.html"
                 class="btn-slide inline-flex items-center justify-center bg-white text-black font-bold text-lg px-12 py-4 uppercase tracking-[0.2em] border-2 border-transparent hover:border-white shadow-2xl">
                 View Fight Card
             </a>
@@ -166,6 +192,36 @@
                 menu.classList.add('hidden');
             }
         });
+
+        // Countdown Script (Target: Feb 20, 2026 20:00 CET)
+        const eventDate = new Date('February 20, 2026 20:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            if (distance < 0) {
+                // If passed, maybe just show zeros or "LIVE"
+                document.getElementById('days').innerText = "00";
+                document.getElementById('hours').innerText = "00";
+                document.getElementById('minutes').innerText = "00";
+                document.getElementById('seconds').innerText = "00";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
     </script>
 
 </body>
