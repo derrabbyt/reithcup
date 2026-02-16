@@ -5,8 +5,8 @@ const FORM_POST_URL =
     "https://docs.google.com/forms/d/e/1FAIpQLSdBDQGNgqUCuihSwIJ-7g0dH3kkBMERTUuMEBTBBWcjpwr6xg/formResponse";
 
 // Spreadsheet + gid for live results (JSONP via Google Visualization API)
-const SPREADSHEET_ID = "1hx195W3genRE7TVQCfKmzYhkzCULOF7I5479gFQf0iM";
-const GID = "249277049";
+const SPREADSHEET_ID = "1bXI1NqkKM-AdAwjZMdFYY8Dibyq6s9HAuC3XYdlEDUY";
+const GID = "340910961";
 
 // DOM targets for counts (note Chrisi appears twice, so it has two different span IDs)
 const COUNT_IDS = {
@@ -73,23 +73,17 @@ function setSelectedUI(entryId, choice) {
     }
 }
 
-// --- Vote submit (single-choice per match; switching allowed) ---
+// --- Vote submit (single-choice per match; NO switching allowed) ---
 window.vote = async function (entryId, choice) {
     const prev = selectedByEntry[entryId];
 
-    // clicking the already-selected option does nothing
-    if (prev === choice) {
-        setMsg(`Already selected: ${choice}`);
+    // If already voted on this match (even if same choice), block it.
+    if (prev) {
+        setMsg(`You have already voted on this match.`);
         return;
     }
 
     setMsg(`Submitting vote: ${choice} ...`);
-
-    // ✅ Optimistic update: if switching, undo previous optimistic choice first
-    if (prev) {
-        const prevCountId = countSpanIdFor(entryId, prev);
-        if (prevCountId) bumpCount(prevCountId, -1);
-    }
 
     const newCountId = countSpanIdFor(entryId, choice);
     if (newCountId) bumpCount(newCountId, +1);
@@ -97,6 +91,15 @@ window.vote = async function (entryId, choice) {
     // Store selection (in-memory only; resets on reload)
     selectedByEntry[entryId] = choice;
     setSelectedUI(entryId, choice);
+
+    // Disable buttons for this entry
+    const map = BUTTON_IDS[entryId];
+    if (map) {
+        for (const opt of Object.keys(map)) {
+            const btn = document.getElementById(map[opt]);
+            if (btn) btn.disabled = true;
+        }
+    }
 
     // Submit vote to Google Forms (creates a new response row each time)
     const data = new URLSearchParams();
