@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maxi | RC Fighter</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Roboto Condensed"', 'sans-serif'],
+                        display: ['"Oswald"', 'sans-serif'],
+                    },
+                    colors: {
+                        'rc-red': '#D20A0A',
+                    },
+                    backgroundImage: {
+                        'hero-pattern': "url('https://images.unsplash.com/photo-1544698310-74ea9d188d17?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .mask-image-b-fade {
+            -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-[#F6F6F6] text-black font-sans antialiased overflow-x-hidden">
+
+    <!-- Floating Navbar -->
+    <!-- Floating Navbar -->
+    <nav
+        class="absolute top-0 left-0 right-0 z-50 flex items-center justify-center bg-white h-[60px] mx-4 md:mx-10 mt-6 shadow-lg relative">
+
+        <!-- Mobile Burger Button -->
+        <button id="mobile-menu-btn" class="absolute left-6 md:hidden text-black focus:outline-none p-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                </path>
+            </svg>
+        </button>
+
+        <!-- Left Nav (Desktop) -->
+        <div class="absolute left-10 hidden md:flex h-full gap-8">
+            <a href="index.html"
+                class="flex items-center h-full text-sm font-bold text-black border-b-[3px] border-transparent tracking-wide hover:text-rc-red transition-colors">
+                HOME
+            </a>
+            <a href="fighters.html"
+                class="flex items-center h-full text-sm font-bold text-black border-b-[3px] border-rc-red tracking-wide hover:text-rc-red transition-colors">
+                FIGHTERS
+            </a>
+            <a href="event.html"
+                class="flex items-center h-full text-sm font-bold text-black border-b-[3px] border-transparent tracking-wide hover:text-rc-red transition-colors">
+                EVENTS
+            </a>
+            <a href="polls.html"
+                class="flex items-center h-full text-sm font-bold text-black border-b-[3px] border-transparent tracking-wide hover:text-rc-red transition-colors">
+                BETS
+            </a>
+        </div>
+
+        <!-- Logo -->
+        <div class="font-display text-[28px] font-bold text-black italic tracking-tighter cursor-default select-none">
+            RC
+        </div>
+
+        <!-- Right Nav (Desktop placeholder) -->
+        <div class="absolute right-10 hidden md:flex h-full items-center gap-6 text-black text-sm font-bold">
+            <!-- Icons or links -->
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu"
+            class="hidden absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-100 flex flex-col items-center py-4 md:hidden z-40 transition-all duration-300">
+            <a href="index.html"
+                class="block py-3 px-6 text-sm font-bold text-black tracking-wide hover:bg-gray-100 w-full text-center hover:text-rc-red transition-colors uppercase">
+                HOME
+            </a>
+            <a href="fighters.html"
+                class="block py-3 px-6 text-sm font-bold text-black tracking-wide hover:bg-gray-100 w-full text-center hover:text-rc-red transition-colors uppercase text-rc-red">
+                FIGHTERS
+            </a>
+            <a href="event.html"
+                class="block py-3 px-6 text-sm font-bold text-black tracking-wide hover:bg-gray-100 w-full text-center hover:text-rc-red transition-colors uppercase">
+                EVENTS
+            </a>
+            <a href="polls.html"
+                class="block py-3 px-6 text-sm font-bold text-black tracking-wide hover:bg-gray-100 w-full text-center hover:text-rc-red transition-colors uppercase">
+                BETS
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative bg-black text-white overflow-hidden min-h-[500px] md:min-h-[600px] flex items-center">
+        <!-- Background Gradient/Image Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-transparent z-0"></div>
+
+        <div
+            class="max-w-7xl mx-auto px-4 w-full relative z-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-center h-full py-12">
+
+            <!-- Left Column: Stats & Info (Desktop: spans 3 cols) -->
+            <div class="md:col-span-3 flex flex-col justify-center space-y-8 order-2 md:order-1">
+
+                <!-- Rank & Div -->
+                <div class="flex items-center gap-3">
+                    <span class="bg-[#333] px-2 py-1 text-xs font-bold uppercase rounded text-gray-300">#12 Welterweight
+                        Division</span>
+                    <span class="bg-[#333] px-2 py-1 text-xs font-bold uppercase rounded text-gray-300">Active</span>
+                </div>
+
+                <!-- Name -->
+                <div>
+                    <h1 class="font-display text-6xl md:text-8xl font-bold uppercase leading-none tracking-tighter">
+                        MAXI
+                    </h1>
+                </div>
+
+                <!-- Division & Record -->
+                <div>
+                    <p class="text-xl font-bold uppercase tracking-wide text-gray-400 mb-1">Welterweight Division</p>
+                    <p class="text-3xl font-display font-bold">10-3-0 (W-L-D)</p>
+                </div>
+
+                <!-- Key Stats -->
+                <div class="grid grid-cols-3 gap-4 border-t border-gray-800 pt-6">
+                    <div class="text-center">
+                        <span class="block font-display text-4xl font-bold">11</span>
+                        <span class="text-[10px] uppercase font-bold text-gray-500 leading-tight block">Wins
+                            by<br>Knockout</span>
+                    </div>
+                    <div class="text-center border-l border-gray-800">
+                        <span class="block font-display text-4xl font-bold">4</span>
+                        <span class="text-[10px] uppercase font-bold text-gray-500 leading-tight block">Wins
+                            by<br>Submission</span>
+                    </div>
+                    <div class="text-center border-l border-gray-800">
+                        <span class="block font-display text-4xl font-bold">9</span>
+                        <span class="text-[10px] uppercase font-bold text-gray-500 leading-tight block">First
+                            Round<br>Finishes</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Column: Cutout Image (Desktop: spans 6 cols) -->
+            <!-- Using negative margin bottom to align with bottom of container if needed, or simply centered -->
+            <div class="md:col-span-6 flex justify-center items-end h-full relative order-1 md:order-2">
+                <!-- Placeholder for Cutout -->
+                <!-- Ideally this image has a transparent background -->
+                <img src="maxi.PNG"
+                    class="max-h-[500px] md:max-h-[700px] object-contain drop-shadow-2xl mask-image-b-fade">
+            </div>
+
+            <!-- Right Column: Fight Cards (Desktop: spans 3 cols) -->
+            <div class="md:col-span-3 flex flex-col justify-center space-y-6 order-3">
+
+
+
+                <!-- Upcoming Fight -->
+                <div>
+                    <h4
+                        class="text-xs font-bold uppercase tracking-widest text-[#999] mb-4 flex justify-between items-center">
+                        Upcoming Fight
+                    </h4>
+                    <div class="bg-[#1a1a1a] p-0 overflow-hidden relative">
+                        <div class="h-1 bg-white w-full"></div>
+                        <div class="p-6 text-center">
+                            <div class="flex justify-center items-center gap-4 mb-3">
+                                <img src="maxi.PNG"
+                                    class="w-12 h-12 rounded-full border-2 border-white object-cover object-top">
+                                <img src="chrisi.PNG"
+                                    class="w-12 h-12 rounded-full border border-gray-700 object-cover object-top">
+                            </div>
+                            <h3 class="font-display text-xl font-bold uppercase mb-1">MAXI vs CHRISI</h3>
+                            <p class="text-xs text-[#D20A0A] font-bold uppercase tracking-wide">Feb 20, 2026</p>
+
+                            <div class="mt-4">
+                                <a href="event.html"
+                                    class="inline-block bg-[#D20A0A] text-white px-4 py-2 text-xs font-bold uppercase tracking-wider hover:bg-red-700 transition-colors cursor-pointer w-full text-center">
+                                    Fight Card &rsaquo;
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Spotlight Section -->
+    <div class="max-w-7xl mx-auto px-4 py-16">
+        <div class="flex items-end justify-between mb-8">
+            <h2 class="font-display text-4xl md:text-5xl font-bold uppercase text-black">RC Spotlight</h2>
+
+        </div>
+
+        <!-- Grid Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <!-- Card 1 (Video) -->
+            <div class="group cursor-pointer">
+                <div class="relative overflow-hidden aspect-[4/3] bg-gray-200 mb-3">
+                    <img src="https://placehold.co/400x300?text=Interview"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    <div
+                        class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                        <svg class="w-12 h-12 text-white drop-shadow-md" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                    </div>
+                    <div
+                        class="absolute bottom-0 left-0 h-1 bg-[#D20A0A] w-0 group-hover:w-full transition-all duration-300">
+                    </div>
+                </div>
+                <h3
+                    class="font-display text-xl font-bold uppercase leading-tight group-hover:text-[#D20A0A] transition-colors">
+                    Main Event Preview | RC Reith
+                </h3>
+            </div>
+
+            <!-- Card 2 (Video) -->
+            <div class="group cursor-pointer">
+                <div class="relative overflow-hidden aspect-[4/3] bg-gray-200 mb-3">
+                    <img src="https://placehold.co/400x300?text=Full+Fight"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    <div
+                        class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                        <svg class="w-12 h-12 text-white drop-shadow-md" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                    </div>
+                    <div
+                        class="absolute bottom-0 left-0 h-1 bg-[#D20A0A] w-0 group-hover:w-full transition-all duration-300">
+                    </div>
+                </div>
+                <h3
+                    class="font-display text-xl font-bold uppercase leading-tight group-hover:text-[#D20A0A] transition-colors">
+                    Full Fight | Maxi vs Chrisi
+                </h3>
+            </div>
+
+            <!-- Card 3 (News) -->
+            <div class="group cursor-pointer">
+                <div class="relative overflow-hidden aspect-[4/3] bg-gray-800 mb-3">
+                    <img src="https://placehold.co/400x300?text=Face+Off"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-80">
+                    <div
+                        class="absolute bottom-2 left-2 bg-[#D20A0A] text-white text-[10px] font-bold uppercase px-2 py-1">
+                        Breaking
+                    </div>
+                    <div
+                        class="absolute bottom-0 left-0 h-1 bg-[#D20A0A] w-0 group-hover:w-full transition-all duration-300">
+                    </div>
+                </div>
+                <h3
+                    class="font-display text-xl font-bold uppercase leading-tight group-hover:text-[#D20A0A] transition-colors">
+                    Thrilling Middleweight Bout Headlines RC Reith
+                </h3>
+            </div>
+
+            <!-- Card 4 (Article) -->
+            <div class="group cursor-pointer">
+                <div class="relative overflow-hidden aspect-[4/3] bg-gray-200 mb-3">
+                    <img src="https://placehold.co/400x300?text=Training"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    <div
+                        class="absolute bottom-0 left-0 h-1 bg-[#D20A0A] w-0 group-hover:w-full transition-all duration-300">
+                    </div>
+                </div>
+                <h3
+                    class="font-display text-xl font-bold uppercase leading-tight group-hover:text-[#D20A0A] transition-colors">
+                    Five Fighters Who've Thrived Moving Up A Weight Division
+                </h3>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer spacer -->
+    <div class="h-20 bg-black text-white flex items-center justify-center">
+        <p class="text-xs text-gray-500 uppercase tracking-widest">&copy; 2026 REITH CUP</p>
+    </div>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        if (btn && menu) {
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!menu.contains(e.target) && !btn.contains(e.target) && !menu.classList.contains('hidden')) {
+                    menu.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,15 +1,44 @@
-<!-- index.html -->
 <!doctype html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>reithcup polls (POC)</title>
+    <title>BETS | REITH CUP</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto+Condensed:ital,wght@0,400;0,700;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Roboto Condensed"', 'sans-serif'],
+                        display: ['"Oswald"', 'sans-serif'],
+                    },
+                    colors: {
+                        'rc-red': '#D20A0A',
+                    },
+                }
+            }
+        }
+    </script>
+
     <script src="app.js?v=1" defer></script>
     <style>
         body {
-            font-family: system-ui, sans-serif;
+            font-family: "Roboto Condensed", sans-serif;
+            background-color: #F6F6F6;
+        }
+
+        .poll-container {
             max-width: 720px;
             margin: 40px auto;
             padding: 0 16px;
@@ -20,6 +49,7 @@
             border-radius: 12px;
             padding: 16px;
             margin: 12px 0;
+            background: white;
         }
 
         .row {
@@ -45,6 +75,7 @@
         button.selected {
             border-color: #000;
             font-weight: 600;
+            background: #eee;
         }
 
         .count {
@@ -64,59 +95,153 @@
             font-size: 14px;
             margin-top: 8px;
         }
+
+        h1 {
+            font-family: "Oswald", sans-serif;
+            font-size: 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-family: "Oswald", sans-serif;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
     </style>
 </head>
 
-<body>
-    <h1>reithcup polls (POC)</h1>
-    <p>Pick one per match. You can change your choice. Counts auto-refresh.</p>
+<body class="bg-[#F6F6F6] text-black font-sans antialiased overflow-x-hidden">
 
-    <div class="card">
-        <h2>Elias vs Erik</h2>
-        <div class="row">
-            <button id="btn-1946702419-elias" onclick="vote('entry.1946702419','Elias')">Elias</button>
-            <span class="count" id="count-elias">0</span>
+    <!-- Navbar -->
+    <nav
+        class="sticky top-0 left-0 right-0 z-50 flex items-center justify-center bg-white h-[60px] shadow-lg w-full mb-8">
 
-            <button id="btn-1946702419-erik" onclick="vote('entry.1946702419','Erik')">Erik</button>
-            <span class="count" id="count-erik">0</span>
+        <!-- Mobile Burger Button -->
+        <button id="mobile-menu-btn" class="absolute left-6 md:hidden text-black focus:outline-none p-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                </path>
+            </svg>
+        </button>
+
+        <!-- Left Nav (Desktop) -->
+        <div class="absolute left-10 hidden md:flex h-full gap-8">
+            <a href="index.html"
+                class="flex items-center h-full text-sm font-bold text-black border-b-[3px] border-transparent tracking-wide hover:text-rc-red transition-colors">
+                HOME
+            </a>
+            <a href="fighters.html"
+                class="flex items-center h-full text-sm font-bold text-black border-b-[3px] border-transparent tracking-wide hover:text-rc-red transition-colors">
+                FIGHTERS
+            </a>
+            <a href="event.html"
+                class="flex items-center h-full text-sm font-bold text-black border-b-[3px] border-transparent tracking-wide hover:text-rc-red transition-colors">
+                EVENTS
+            </a>
+            <a href="polls.html"
+                class="flex items-center h-full text-sm font-bold text-black border-b-[3px] border-rc-red tracking-wide hover:text-rc-red transition-colors">
+                BETS
+            </a>
         </div>
-    </div>
 
-    <div class="card">
-        <h2>Maxi vs Chrisi</h2>
-        <div class="row">
-            <button id="btn-1298947205-maxi" onclick="vote('entry.1298947205','Maxi')">Maxi</button>
-            <span class="count" id="count-maxi">0</span>
-
-            <button id="btn-1298947205-chrisi" onclick="vote('entry.1298947205','Chrisi')">Chrisi</button>
-            <span class="count" id="count-chrisi-1">0</span>
+        <!-- Logo -->
+        <div class="font-display text-[28px] font-bold text-black italic tracking-tighter cursor-default select-none">
+            RC
         </div>
-    </div>
 
-    <div class="card">
-        <h2>Gery vs Chrisi</h2>
-        <div class="row">
-            <button id="btn-1819511091-gery" onclick="vote('entry.1819511091','Gery')">Gery</button>
-            <span class="count" id="count-gery">0</span>
-
-            <button id="btn-1819511091-chrisi" onclick="vote('entry.1819511091','Chrisi')">Chrisi</button>
-            <span class="count" id="count-chrisi-2">0</span>
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu"
+            class="hidden absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-100 flex flex-col items-center py-4 md:hidden z-40 transition-all duration-300">
+            <a href="index.html"
+                class="block py-3 px-6 text-sm font-bold text-black tracking-wide hover:bg-gray-100 w-full text-center hover:text-rc-red transition-colors uppercase">
+                HOME
+            </a>
+            <a href="fighters.html"
+                class="block py-3 px-6 text-sm font-bold text-black tracking-wide hover:bg-gray-100 w-full text-center hover:text-rc-red transition-colors uppercase">
+                FIGHTERS
+            </a>
+            <a href="event.html"
+                class="block py-3 px-6 text-sm font-bold text-black tracking-wide hover:bg-gray-100 w-full text-center hover:text-rc-red transition-colors uppercase">
+                EVENTS
+            </a>
+            <a href="polls.html"
+                class="block py-3 px-6 text-sm font-bold text-black tracking-wide hover:bg-gray-100 w-full text-center hover:text-rc-red transition-colors uppercase text-rc-red">
+                BETS
+            </a>
         </div>
-    </div>
+    </nav>
 
-    <div class="card">
-        <h2>Patzi vs Bier</h2>
-        <div class="row">
-            <button id="btn-1721433686-patzi" onclick="vote('entry.1721433686','Patzi')">Patzi</button>
-            <span class="count" id="count-patzi">0</span>
+    <!-- Main Content Wrapped -->
+    <div class="poll-container">
+        <h1>reithcup polls (POC)</h1>
+        <p>Pick one per match. You can change your choice. Counts auto-refresh.</p>
 
-            <button id="btn-1721433686-bier" onclick="vote('entry.1721433686','Bier')">Bier</button>
-            <span class="count" id="count-bier">0</span>
+        <div class="card">
+            <h2>Elias vs Erik</h2>
+            <div class="row">
+                <button id="btn-1946702419-elias" onclick="vote('entry.1946702419','Elias')">Elias</button>
+                <span class="count" id="count-elias">0</span>
+
+                <button id="btn-1946702419-erik" onclick="vote('entry.1946702419','Erik')">Erik</button>
+                <span class="count" id="count-erik">0</span>
+            </div>
         </div>
-    </div>
 
-    <div id="msg"></div>
-    <div id="updated"></div>
+        <div class="card">
+            <h2>Maxi vs Chrisi</h2>
+            <div class="row">
+                <button id="btn-1298947205-maxi" onclick="vote('entry.1298947205','Maxi')">Maxi</button>
+                <span class="count" id="count-maxi">0</span>
+
+                <button id="btn-1298947205-chrisi" onclick="vote('entry.1298947205','Chrisi')">Chrisi</button>
+                <span class="count" id="count-chrisi-1">0</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Gery vs Chrisi</h2>
+            <div class="row">
+                <button id="btn-1819511091-gery" onclick="vote('entry.1819511091','Gery')">Gery</button>
+                <span class="count" id="count-gery">0</span>
+
+                <button id="btn-1819511091-chrisi" onclick="vote('entry.1819511091','Chrisi')">Chrisi</button>
+                <span class="count" id="count-chrisi-2">0</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Patzi vs Bier</h2>
+            <div class="row">
+                <button id="btn-1721433686-patzi" onclick="vote('entry.1721433686','Patzi')">Patzi</button>
+                <span class="count" id="count-patzi">0</span>
+
+                <button id="btn-1721433686-bier" onclick="vote('entry.1721433686','Bier')">Bier</button>
+                <span class="count" id="count-bier">0</span>
+            </div>
+        </div>
+
+        <div id="msg"></div>
+        <div id="updated"></div>
+    </div> <!-- End poll-container -->
+
+    <script>
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 
 </html>

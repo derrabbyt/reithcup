@@ -1,4 +1,4 @@
 # reithcup
 
-promotional site for the greatest event of sporting history
+promotional site for the greatest event in recent sporting history
 

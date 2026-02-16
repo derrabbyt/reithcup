@@ -27,7 +27,7 @@
                         'rc-red': '#D20A0A',
                     },
                     backgroundImage: {
-                        'hero-pattern': "url('https://images.unsplash.com/photo-1544698310-74ea9d188d17?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')",
+                        'hero-pattern': "url('title image v2.png')",
                     }
                 }
             }
@@ -67,11 +67,11 @@
     </style>
 </head>
 
-<body class="bg-black text-white font-sans antialiased overflow-x-hidden relative">
+<body class="bg-white text-white font-sans antialiased overflow-x-hidden relative">
 
     <!-- Floating Navbar -->
-    <nav
-        class="absolute top-0 left-0 right-0 z-50 flex items-center justify-center bg-white h-[60px] mx-4 md:mx-10 mt-6 shadow-lg relative">
+    <!-- Navbar -->
+    <nav class="sticky top-0 left-0 right-0 z-50 flex items-center justify-center bg-white h-[60px] shadow-lg w-full">
 
         <!-- Mobile Burger Button -->
         <button id="mobile-menu-btn" class="absolute left-6 md:hidden text-black focus:outline-none p-2">
@@ -84,9 +84,21 @@
 
         <!-- Left Nav (Desktop) -->
         <div class="absolute left-10 hidden md:flex h-full gap-8">
-            <a href="#"
+            <a href="index.html"
                 class="flex items-center h-full text-sm font-bold text-black border-b-[3px] border-rc-red tracking-wide hover:text-rc-red transition-colors">
+                HOME
+            </a>
+            <a href="fighters.html"
+                class="flex items-center h-full text-sm font-bold text-black border-b-[3px] border-transparent tracking-wide hover:text-rc-red transition-colors">
+                FIGHTERS
+            </a>
+            <a href="event.html"
+                class="flex items-center h-full text-sm font-bold text-black border-b-[3px] border-transparent tracking-wide hover:text-rc-red transition-colors">
                 EVENTS
+            </a>
+            <a href="polls.html"
+                class="flex items-center h-full text-sm font-bold text-black border-b-[3px] border-transparent tracking-wide hover:text-rc-red transition-colors">
+                BETS
             </a>
         </div>
 
@@ -103,32 +115,44 @@
         <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu"
             class="hidden absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-100 flex flex-col items-center py-4 md:hidden z-40 transition-all duration-300">
-            <a href="#"
+            <a href="index.html"
+                class="block py-3 px-6 text-sm font-bold text-black tracking-wide hover:bg-gray-100 w-full text-center hover:text-rc-red transition-colors uppercase text-rc-red">
+                HOME
+            </a>
+            <a href="fighters.html"
+                class="block py-3 px-6 text-sm font-bold text-black tracking-wide hover:bg-gray-100 w-full text-center hover:text-rc-red transition-colors uppercase">
+                FIGHTERS
+            </a>
+            <a href="event.html"
                 class="block py-3 px-6 text-sm font-bold text-black tracking-wide hover:bg-gray-100 w-full text-center hover:text-rc-red transition-colors uppercase">
                 EVENTS
             </a>
-            <!-- Potentially add "POLLS" link here too if needed -->
             <a href="polls.html"
                 class="block py-3 px-6 text-sm font-bold text-black tracking-wide hover:bg-gray-100 w-full text-center hover:text-rc-red transition-colors uppercase">
-                POLLS
+                BETS
             </a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <div class="relative w-full h-screen bg-hero-pattern bg-cover bg-center flex items-center justify-center">
+    <div class="relative w-full h-[calc(100vh-60px)] flex items-center justify-center overflow-hidden">
+
+        <!-- Background Image -->
+        <img src="title image v2.png"
+            class="absolute inset-0 w-full h-full object-cover object-top origin-top scale-[1.4] z-0"
+            alt="Hero Background">
 
         <!-- Gradient Overlay -->
         <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/80 z-10"></div>
 
         <!-- Content -->
-        <div class="relative z-20 text-center px-4 max-w-5xl mx-auto mt-20">
-            <!-- Added mt-20 to offset floating header visual -->
+        <div class="relative z-20 text-center px-4 max-w-5xl mx-auto">
+            <!-- Removed mt-20 -->
 
             <!-- Event Label -->
             <div
                 class="text-lg md:text-xl font-bold uppercase tracking-[2px] opacity-90 mb-1 drop-shadow-lg text-white">
-                RC REITH
+                REITH CUP
             </div>
 
             <!-- Main Headline -->
@@ -176,6 +200,8 @@
             </a>
         </div>
     </div>
+
+
 
     <!-- Mobile Menu Script -->
     <script>
